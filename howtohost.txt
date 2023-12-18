@@ -1,0 +1,55 @@
+          HOW TO DEPPLOY AND HOST YOUR WEBSITE USING INGINX AND DOCKER
+__________________________________________________________________________________
+
+
+https://www.codewithharry.com/blogpost/django-deploy-nginx-gunicorn/
+
+
+
+
+16-11-2023-> i will add some extra field in vendor profile and specificcaly i will provide a flexibility to change the vendor details 
+
+
+maps api key - AIzaSyDrB8RolG0CDhUOcp6PwKNsZmsZaf_Wi2Q
+
+
+
+
+
+how to add a place autocomplete search widget to your website 
+
+ans - > https://youtu.be/c3MjU9E9buQ?si=jjKLjUIx4fAwTf2M
+
+
+project udemy link -> https://www.udemy.com/course/python-django-real-world-project-multi-vendor-restaurant/learn/lecture/33180184#overview
+
+
+
+
+
+
+
+
+
+3PM - https://developers.google.com/maps/documentation/places/web-service/autocomplete
+
+
+
+
+
+I WILL MAKE AUTOCOMPLETE FOR ADDRESS FIELD AND MAKE A FUNCTION ONPLACE CHGANGE I WILL TAKE THE VALYUE FROM THTA FIELD AND TAKE LAT AND LONG THEN I NEED TO GEEOCODE IT AND THTA ADDRES FILED WILL CHANGE ACCORDOING TO ADRRESS CHGANGE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+{% include 'includes/alert.html' %}
+    
+    {% include 'includes/covers.html' %}
+
+
+
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+<!--							<side bar window in another file named v_sidebar.html-->
+                    {%include 'includes/v_sidebar.html' %}
+
+                    
+
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h5 class="text-uppercase" style="color: rgb(68, 21, 109)!important;">Add-Food</h5>
+                            <hr>
+
+                            <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                   
+                                   
+                                         <lable>Category_name</lable>
+                                         {{cat_update_form.category_name}}
+                                         <lable>description</lable>
+
+                                         {{cat_update_form.description}}
+                                         
+
+
+                                  
+                                
+                                    <input class="update-restaurant" type="submit" value="Update Category"> <a  style="padding:30px;" href="{% url 'menu_builder' %}">
+                                        <img class="photo" src="{% static 'extra-images/back.svg' %}" alt="Back">
+                                    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+                            </form>
+
+                              
+                            
+                                            
+                            
+
+                        
+
+
+
+
+
+
+
+                            
+                           
+                                                
+
+            
+
+
+
+                                
+                            
+
+                            
+                     
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

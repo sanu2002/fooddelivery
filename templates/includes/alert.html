@@ -1,0 +1,17 @@
+{% if  messages %}
+
+
+<!-- alert-suceess shoud be dynamic why becaause we dont know wheather our regissatrtion valid or invalid -->
+
+{% for i in messages %}
+    <div class="alert alert-{{i.tags}} show-notification " role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+        </button>
+        {{i}}
+    </div>
+
+  {% endfor %}
+
+{% endif %}
+

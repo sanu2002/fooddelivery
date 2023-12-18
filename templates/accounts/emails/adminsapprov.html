@@ -1,0 +1,9 @@
+{% autoescape off %}
+
+{% if user.is_approved %}
+Congratulations, your restaurant has been approved.
+{% else %}
+We are sorry, but your restaurant has not been approved.
+{% endif %}
+
+{% endautoescape %}

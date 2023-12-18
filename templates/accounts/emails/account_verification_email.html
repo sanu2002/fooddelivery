@@ -1,0 +1,7 @@
+{% autoescape off %}
+Hi {{ user.first_name }},
+
+Please activate the above link to verify as a customer:
+
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}

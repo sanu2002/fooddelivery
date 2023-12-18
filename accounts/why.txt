@@ -1,0 +1,127 @@
+why we are using forms ??
+
+ans-> Becsue form gives   me a lot of predefined method and it also profide the field error and all those thigs if you dont use forms then 
+you have to manyally type a lot of code for making the restrcition like  user alraedy exit and all these stuff so move fireward we can sere that by using form we got so many predefiend function liker is_valuid and all these   thigs so that raeson i am using form instead of using manual code 
+
+fields error -> which are stored  in our custome used field but what about the custok field
+like confirm field that i have made in form file by using wizard
+
+
+
+
+
+NOW ANOTHER QUESTION DJANGO HAS BUIKLT IN  Message SO WE CAN EASILY SHOW THE success,FAILUE AND ALL THES MESSAGE stuff
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1-How debug-True (extract all the data from the broser like cookies seeting, window deyils and all thes things )
+2-Wen i pass something in views.py then i see in the message option there  is not need to pass with dictionary format why 
+who is responsible for passing the function in the html page 
+3- where     'django.middleware.security.SecurityMiddleware',
+and template functionlaity written 
+
+
+4- .ini , .env this is coomnly used fir hiding the core implementaion in python
+
+if u use .env the import decouple and use config() to hide the data but
+if u use .ini in python use 
+
+like
+
+import configparser
+
+# Create a configparser object
+config = configparser.ConfigParser()
+=
+# Read the INI file
+config.read('config.ini')
+
+# Access values from the INI file
+database_settings = config['Database']
+db_engine = database_settings['engine']
+db_name = database_settings['name']
+db_user = database_settings['user']
+db_password = database_settings['password']
+db_host = database_settings['host']
+db_port = database_settings['port']
+
+# Use these values in your Django settings
+DATABASES = {
+    'default': {
+        'ENGINE': db_engine,
+        'NAME': db_name,
+        'USER': db_user,
+        'PASSWORD': db_password,
+        'HOST': db_host,
+        'PORT': db_port,
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1-ans
+++++++
+through request module
+def my_view(request):
+    # Access request data
+    print(request.method)  # HTTP method (GET, POST, etc.)
+    print(request.GET)     # GET parameters
+    print(request.POST)    # POST data
+    print(request.COOKIES) # Cookies
+    # ... other request data
+
+import logging
+
+def my_view(request):
+    logger = logging.getLogger(__name__)
+    logger.debug("This is a debug message")
+    # ... other code
+
+Window Details:
+
+It's important to note that Django is a server-side framework, 
+and it does not have direct access to the client's browser window details.
+Information about the client-side browser window is typically managed using JavaScript,
+which runs on the client side. If you need to interact with the client's browser window, 
+you'll need to use JavaScript or other client-side technologies.
+
+by sending ajax request through js you will knwo the client detaild ok
+
+
+
+
+
+
+
+ans  of 2nd question 
+_______________________
+MIDDLEWARE =     django.contrib.messages.middleware.MessageMiddleware',
+
+installed app=     'django.contrib.messages',      
+
+
+template =  'django.contrib.messages.context_processors.messages',
+
+
+    
+
+

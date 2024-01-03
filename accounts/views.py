@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .forms import Userform
 from vendor.forms import Vendorform
 
+from django.template.defaultfilters import slugify
+
 from django.contrib.auth import authenticate
 from vendor.models import Vendor
 
@@ -154,8 +156,10 @@ def registerUser(request):
 
 def registerVendor(request):
     if request.user.is_authenticated:
-        messages.warning(request,'You are already loggged in')
-        return redirect('dashboard')
+        messages.success(request,'you are already a logged-in user')
+
+        return redirect('myaccount')
+       
     
     
     
@@ -177,8 +181,12 @@ def registerVendor(request):
                 
                 vendor=v_form.save(commit=False)
                 vendor.user=user 
+                vendor_name=v_form.cleaned_data['vendor_name']
+                vendor.vendor_slug = slugify(vendor_name) + '-' + str(vendor.id)
                 user_profile=Userprofile.objects.get(user=user)
                 vendor.user_profile=user_profile
+                print('i am here')
+                
                 vendor.save()
                 messages.success(request,'YOUR ACCOUNT HAS BEEN CREATED SUCCESSFULLY PLEASE WAIT FOR APPROVAL')
                 return redirect('registerVendor')

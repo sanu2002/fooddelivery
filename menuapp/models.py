@@ -4,6 +4,13 @@ from vendor.models import Vendor
 
 # Create your models here.
 
+
+# There is no foreign key related to the Fooditem so 
+# we need to use related name to work wiht   prefetch_related
+# query . So what is is prefetch related query it is just like a join 
+# statement which help us to join 2 table and retrive related data from both the table
+
+
 class Category(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     category_name = models.CharField(max_length=50, unique=True, default='DefaultCategoryName')
@@ -18,7 +25,7 @@ class Category(models.Model):
     
 class Fooditem(models.Model):
     vendor=models.ForeignKey(Vendor,on_delete=models.CASCADE)
-    category=models.ForeignKey(Category,on_delete=models.CASCADE)
+    category=models.ForeignKey(Category,on_delete=models.CASCADE,related_name='fooditem')
     foodtitle=models.CharField(max_length=50)
     slug=models.SlugField(max_length=100,unique=True)
     description=models.TextField(max_length=250,blank=True)

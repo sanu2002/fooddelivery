@@ -12,11 +12,11 @@ def index(request):
 
 
 # def geocode1(request):
-    clubs = Userprofile.objects.all()
-    context = {
-        'clubs':clubs,
-    }
-    return render(request, 'geocode.html',context)
+    # clubs = Userprofile.objects.all()
+    # context = {
+    #     'clubs':clubs,
+    # }
+    # return render(request, 'geocode.html',context)
 
 
 

@@ -1,0 +1,8 @@
+function prompt {
+    $gearEmoji = [char]::ConvertFromUtf32(128377)
+    $largerGearEmoji = "$gearEmoji$gearEmoji"  # Repeating the emoji to simulate larger size
+    
+    $promptString = "$largerGearEmoji $('>' * ($nestedPromptLevel + 1)) "
+    Write-Host "`e[33m$promptString`e[0m" -NoNewline  # ANSI escape codes for yellow text
+    return " "
+}

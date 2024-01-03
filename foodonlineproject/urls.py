@@ -28,7 +28,7 @@ urlpatterns = [
     path('vendor/',include('vendor.urls')),
     path('menuapp/',include('menuapp.urls')),
     path('marketplace',include('marketplace.urls')),
-    path("__debug__/", include("debug_toolbar.urls")),
+    # path("__debug__/", include("debug_toolbar.urls")),
     # path('geoocode/',views.geoocode)
    
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

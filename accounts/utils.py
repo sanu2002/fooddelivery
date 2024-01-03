@@ -7,7 +7,7 @@ def detect(user):
         elif user.role == Custom_User.CUSTOMER:
             redirecturl = 'customerdashboard'
         elif user.role is None and user.is_superuser:
-            redirecturl = '/admin'
+            redirecturl = '/login'
         return redirecturl
 
 

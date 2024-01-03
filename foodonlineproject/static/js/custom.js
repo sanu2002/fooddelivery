@@ -68,3 +68,101 @@ function onPlaceChanged() {
 
 // Initialize the autocomplete when the Google Maps API is loaded
 window.onload = initAutoComplete;
+
+
+// $(document).ready(function(e){
+    
+//     $('.cart-add-data').on('click', function(e) {
+//         e.preventDefault();
+        
+//         const foodId = $(this).attr('id');
+//         const url = $(this).attr('data-url');
+//         const csrfToken = $('input[name=csrfmiddlewaretoken]').val();  // Get CSRF token from the page
+
+//         const data = {
+//             'food': foodId,
+//         };
+
+//         $.ajax({
+//             type: 'GET',
+//             url: url,
+//             data: data,
+//             success: function(response) {
+//                 console.log(response);
+//             },
+//             error: function(error) {
+//                 console.error('Error:', error);
+//             }
+//         });
+//     });
+// });
+
+
+// here i will use the fetch or ajax request for making the cart functionality working 
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.cart-add-data').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const foodId = this.getAttribute('id');
+            const url = this.getAttribute('data-url');
+
+
+            const data = {
+                'food': foodId,
+            };
+            
+
+            fetch(url + '?' + new URLSearchParams(data), {
+                method: 'GET',
+            })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                    console.error('Error:', error);
+            });
+        });
+    });
+
+
+
+    // place the cart item quantity on load
+
+    let item_qt = document.getElementsByClassName('item_qt');
+    let itemArray = Array.from(item_qt);
+
+    itemArray.forEach(element => {
+        let the_id = element.getAttribute('id');
+        let qty = element.getAttribute('data_qt');
+
+        // Assuming you want to set the HTML content of an element with ID 'the_id'
+        let targetElement = document.getElementById(the_id);
+
+        if (targetElement) {
+            // Set the HTML content using .innerHTML
+            targetElement.innerHTML = qty;
+        }
+    });
+
+
+
+    // $('.item_qt').each(function(){
+    //      let the_id=$(this).attr('id')
+    //      console.log(the_id)
+    //      let qty=$(this).attr('data_qt')
+    //      $('#'+the_id).html(qty)
+
+    // })
+
+
+
+
+    
+
+
+
+
+});

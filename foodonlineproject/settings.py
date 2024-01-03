@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'accounts',
     'vendor',
     'menuapp',
-    'debug_toolbar'
+    'marketplace'
+  
     
     
 ]
@@ -77,6 +78,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processor.get_vendor',
                 'accounts.context_processor.get_google_api',
+                'marketplace.context_processor.get_cart_counter',
             ],
         },
     },
@@ -202,8 +204,8 @@ BASE_COUNTRY='IN'
 # SESSION_COOKIE_AGE = 900
 
 
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
+# INTERNAL_IPS = [
+#     # ...
+#     "127.0.0.1",
+#     # ...
+# ]

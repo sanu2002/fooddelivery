@@ -1,6 +1,14 @@
-from django.shortcuts import render
-
+from django.shortcuts import redirect, render,HttpResponse
+from django.http import JsonResponse
 # Create your views here.
+from django.db.models import Prefetch
+from .models import Cart
+
+
+
+from menuapp.models import *
+
+from django.shortcuts import get_object_or_404
 
 from vendor.models import *
 
@@ -21,3 +29,57 @@ def marketplace(request):
     
     
     return render(request, 'market/marketplace.html',context)
+
+def vendor_details(request,vendor_slug):
+    vendor=get_object_or_404(Vendor,vendor_slug=vendor_slug)
+
+    
+    category=Category.objects.filter(vendor=vendor).prefetch_related(
+        Prefetch(
+            'fooditem',
+            queryset=Fooditem.objects.filter(is_avalable=True)
+        )
+        
+    )
+    
+    if request.user.is_authenticated:
+        cart_item=Cart.objects.filter(user=request.user)
+        
+    else:
+        cart_item=None
+    
+    context={
+        'vendor':vendor,
+        'category':category,
+        'cart_item':cart_item,
+    }
+    
+    
+    return render(request,'market/vendor_details.html',context)
+
+
+
+def add_to_cart(request, food_id):
+    print(food_id)
+    if request.user.is_authenticated:
+        try:
+            fooditem = Fooditem.objects.get(id=food_id)
+            
+            try:
+                chckcart = Cart.objects.get(user=request.user, fooditem=fooditem)
+                chckcart.quantitiy += 1
+                chckcart.save()
+                return JsonResponse({'status': 'increases cart'})
+
+            except Cart.DoesNotExist:
+                chckcart = Cart.objects.create(user=request.user, fooditem=fooditem, quantitiy=1)
+                chckcart.save()
+                return JsonResponse({'status': 'new cart is created successfully'})
+
+        except Cart.DoesNotExist:
+            return JsonResponse({'status': 'fooditem not found'})
+
+    else:
+        return JsonResponse({'status': 'You need to login'})
+    
+    

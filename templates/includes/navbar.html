@@ -8,6 +8,7 @@
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <div class="logo">
+
                             <figure>
                                 <a href="{% url 'home' %}" class="light-logo">
                                     <img src="{% static 'extra-images/listing-logo18.png' %}" alt="FoodBakery" width="50">
@@ -27,9 +28,35 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
                         <div class="login-option" style="padding: 12px;display: flex; align-items: center;">
+
+                          <!-- so here is a catch now we will fetch the cart details form cart model -->
+                          <!-- so the thing is that that navbar will access in everypages so we -->
+                          <!-- dont need to add the cart model in each html pages so what we will do  -->
+                          <!-- we will make a context processor for getting the value dynamically -->
+
+
+
+                          {% if user.is_authenticated %}
+                            <a href="" style="margin-right: 19px; padding:12px">
+                                <img style="width: 20px; height:20px" src="{% static 'extra-images/cart.gif' %}">
+                                <span class="badge  badge-warning id='cart_counter' style='border-radius:50px; position:relative;' ">{{cart_count}}</span>
+
+                            
+                            </a>
+                          {% endif %}
+
+
+                        
+
+
+
+
+
                             <a href="{% url 'marketplace' %}" class="btn btn-outline-danger mt-2 text-uppercase font-weight-bold">Marketplace</a>
                             {% if user.is_authenticated %}
+                            
                                 <a class="cs-color cs-popup-joinus-btn login-popup mt-2 !important" data-target="#sign-in" href="{% url 'myaccount' %}">Account</a>
                                 <a class="cs-color cs-popup-joinus-btn login-popup mt-2 " data-target="#sign-in" href="{% url 'logout' %}">Logout</a>
                             {% else %}

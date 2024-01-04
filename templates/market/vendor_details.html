@@ -117,15 +117,17 @@
 															</div>
 															<div class="price-holder">
 																<span class="price">{{food.price}}</span>
-																    <a href="#" class="cart-decrease-data" style="margin-right: 28px;" ><i class="icon-minus text-color"></i></a>
-																	<label id="qt-{{food.id}}" class="cart_count">0</label>
-
-
-																	<a href="#" class="cart-add-data" id="{{food.id}}" data-url="{% url 'add_to_cart' food.id %}"><i class="icon-plus4 text-color"></i></a>
-
+															
+																<!-- Minus icon with inline styles -->
+																<a href="#" class="cart-decrease-data" id="{{food.id}}" data-url="{% url 'remove_from_cart' food.id %}" style="margin-right: 28px; display: inline-block; font-size: 16px; color: #333; cursor: pointer;"><i class="icon-minus text-color"></i></a>
+															
+																<!-- Cart count label with inline styles -->
+																<label id="qt-{{food.id}}" class="cart_count" style="display: inline-block; /* Add any specific styles for the cart_count label here */">0</label>
+															
+																<!-- Plus icon with inline styles -->
+																<a href="#" class="cart-add-data" id="{{food.id}}" data-url="{% url 'add_to_cart' food.id %}" style="margin-right: 28px; display: inline-block; font-size: 16px; color: #333; cursor: pointer;"><i class="icon-plus4 text-color"></i></a>
+															
 																<span id="add-menu-loader-10"></span>
-
-
 															</div>
 														</li>
 														

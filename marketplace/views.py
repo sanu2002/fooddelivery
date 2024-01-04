@@ -3,7 +3,7 @@ from django.http import JsonResponse
 # Create your views here.
 from django.db.models import Prefetch
 from .models import Cart
-
+from .context_processor import get_cart_counter
 
 
 from menuapp.models import *
@@ -69,12 +69,12 @@ def add_to_cart(request, food_id):
                 chckcart = Cart.objects.get(user=request.user, fooditem=fooditem)
                 chckcart.quantitiy += 1
                 chckcart.save()
-                return JsonResponse({'status': 'increases cart'})
+                return JsonResponse({'status': 'increases cart','cart_count':get_cart_counter(request),'chckcart':chckcart.quantitiy})
 
             except Cart.DoesNotExist:
                 chckcart = Cart.objects.create(user=request.user, fooditem=fooditem, quantitiy=1)
                 chckcart.save()
-                return JsonResponse({'status': 'new cart is created successfully'})
+                return JsonResponse({'status': 'new cart is created successfully','cart_count':get_cart_counter(request),'chckcart':chckcart.quantitiy})
 
         except Cart.DoesNotExist:
             return JsonResponse({'status': 'fooditem not found'})
@@ -83,3 +83,35 @@ def add_to_cart(request, food_id):
         return JsonResponse({'status': 'You need to login'})
     
     
+def remove_from_cart(request,food_id):
+    if request.user.is_authenticated:
+        try:
+            fooditem = Fooditem.objects.get(id=food_id)
+            
+            try:
+                chckcart = Cart.objects.get(user=request.user, fooditem=fooditem)
+                if chckcart.quantitiy >1:
+                    chckcart.quantitiy -= 1
+                    chckcart.save()
+                else:
+                    chckcart.delete()
+                    chckcart.quantitiy=0
+                    
+                return JsonResponse({'status': 'increases cart','cart_count':get_cart_counter(request),'chckcart':chckcart.quantitiy})
+
+
+
+            except Cart.DoesNotExist:
+                return JsonResponse({'status': 'failed','message':'you dont have item in this cart'})
+
+                
+               
+        except Cart.DoesNotExist:
+            return JsonResponse({'status': 'failed','message':'invalid-request'})
+
+    else:
+        return JsonResponse({'status': 'You need to login'})
+    
+    
+    
+  

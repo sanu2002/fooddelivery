@@ -88,7 +88,8 @@ window.onload = initAutoComplete;
 //             url: url,
 //             data: data,
 //             success: function(response) {
-//                 console.log(response);
+//                 $('#cart_counter').html(response.cart_count['cart_count']) 
+
 //             },
 //             error: function(error) {
 //                 console.error('Error:', error);
@@ -100,12 +101,85 @@ window.onload = initAutoComplete;
 
 // here i will use the fetch or ajax request for making the cart functionality working 
 
+
+
+
+// https://sweetalert2.github.io/#download - i will uses this for shwoing login required
+
 document.addEventListener('DOMContentLoaded', function() {
+
+
+
+
+
+    document.querySelectorAll('.cart-decrease-data').forEach(function(element){
+
+          element.addEventListener('click',function(e){
+            e.preventDefault()
+            const foodId = this.getAttribute('id');
+            const url = this.getAttribute('data-url');
+
+            const data={
+                'id':foodId
+            }
+
+            fetch(url + '?' + new URLSearchParams(data), {
+                method: 'GET',
+            })
+            .then((response)=>response.json())
+            .then((response)=>{
+
+                document.getElementById('cart_counter').innerHTML=response.cart_count['cart_count']
+                document.querySelector(`#qt-${foodId}`).innerHTML = response.chckcart;
+
+
+                   
+                     
+                 
+                
+
+            })
+
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+
+
+
+
+
+
+
+                
+
+          })
+
+
+
+
+
+    })
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     document.querySelectorAll('.cart-add-data').forEach(function(element) {
         element.addEventListener('click', function(e) {
             e.preventDefault();
-
             const foodId = this.getAttribute('id');
+
             const url = this.getAttribute('data-url');
 
 
@@ -119,11 +193,31 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(response => {
-                console.log(response);
+
+                    console.log(response.cart_count['cart_count'])
+                    document.getElementById('cart_counter').innerHTML=response.cart_count['cart_count']
+                    document.querySelector(`#qt-${foodId}`).innerHTML = response.chckcart;
+
+                    // $('#qt-'+foodId).html(response.chckcart) js-query
+                   
+
+
+             
+                     
+                   
+                    
+                     
+
+                
             })
             .catch(error => {
                     console.error('Error:', error);
             });
+
+
+
+
+
         });
     });
 
@@ -149,13 +243,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // $('.item_qt').each(function(){
-    //      let the_id=$(this).attr('id')
-    //      console.log(the_id)
-    //      let qty=$(this).attr('data_qt')
-    //      $('#'+the_id).html(qty)
-
-    // })
 
 
 

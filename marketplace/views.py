@@ -60,58 +60,50 @@ def vendor_details(request,vendor_slug):
 
 
 def add_to_cart(request, food_id):
-    print(food_id)
     if request.user.is_authenticated:
-        try:
-            fooditem = Fooditem.objects.get(id=food_id)
-            
             try:
-                chckcart = Cart.objects.get(user=request.user, fooditem=fooditem)
-                chckcart.quantitiy += 1
-                chckcart.save()
-                return JsonResponse({'status': 'increases cart','cart_count':get_cart_counter(request),'chckcart':chckcart.quantitiy})
-
-            except Cart.DoesNotExist:
-                chckcart = Cart.objects.create(user=request.user, fooditem=fooditem, quantitiy=1)
-                chckcart.save()
-                return JsonResponse({'status': 'new cart is created successfully','cart_count':get_cart_counter(request),'chckcart':chckcart.quantitiy})
-
-        except Cart.DoesNotExist:
-            return JsonResponse({'status': 'fooditem not found'})
-
-    else:
-        return JsonResponse({'status': 'You need to login'})
-    
-    
-def remove_from_cart(request,food_id):
-    if request.user.is_authenticated:
-        try:
-            fooditem = Fooditem.objects.get(id=food_id)
-            
-            try:
-                chckcart = Cart.objects.get(user=request.user, fooditem=fooditem)
-                if chckcart.quantitiy >1:
-                    chckcart.quantitiy -= 1
-                    chckcart.save()
-                else:
-                    chckcart.delete()
-                    chckcart.quantitiy=0
-                    
-                return JsonResponse({'status': 'increases cart','cart_count':get_cart_counter(request),'chckcart':chckcart.quantitiy})
-
-
-
-            except Cart.DoesNotExist:
-                return JsonResponse({'status': 'failed','message':'you dont have item in this cart'})
-
+                fooditem = Fooditem.objects.get(id=food_id)
                 
-               
-        except Cart.DoesNotExist:
-            return JsonResponse({'status': 'failed','message':'invalid-request'})
+                try:
+                    chckcart = Cart.objects.get(user=request.user, fooditem=fooditem)
+                    chckcart.quantitiy += 1
+                    chckcart.save()
+                    return JsonResponse({'status': 'increases cart', 'cart_count': get_cart_counter(request), 'chckcart': chckcart.quantitiy}, status=200)
+
+                except Cart.DoesNotExist:
+                    chckcart = Cart.objects.create(user=request.user, fooditem=fooditem, quantitiy=1)
+                    chckcart.save()
+                    return JsonResponse({'status': 'new cart is created successfully', 'cart_count': get_cart_counter(request), 'chckcart': chckcart.quantitiy}, status=200)
+
+            except Fooditem.DoesNotExist:
+                return JsonResponse({'status': 'fooditem not found'}, status=400)
+        
+    else:
+        return JsonResponse({'status': 'login_required', 'message': 'you need to login first'}, status=401)
+
+def remove_from_cart(request, food_id):
+    if request.user.is_authenticated:
+            try:
+                fooditem = Fooditem.objects.get(id=food_id)
+                
+                try:
+                    chckcart = Cart.objects.get(user=request.user, fooditem=fooditem)
+                    if chckcart.quantitiy > 1:
+                        chckcart.quantitiy -= 1
+                        chckcart.save()
+                    else:
+                        chckcart.delete()
+                        chckcart.quantitiy = 0
+                        
+                    return JsonResponse({'status': 'decreases cart', 'cart_count': get_cart_counter(request), 'chckcart': chckcart.quantitiy}, status=200)
+
+                except Cart.DoesNotExist:
+                    return JsonResponse({'status': 'failed', 'message': 'you dont have item in this cart'}, status=400)
+
+            except Fooditem.DoesNotExist:
+                return JsonResponse({'status': 'failed', 'message': 'invalid-request'}, status=400)
+            
+       
 
     else:
-        return JsonResponse({'status': 'You need to login'})
-    
-    
-    
-  
+        return JsonResponse({'status': 'login_required', 'message': 'you need to login first'}, status=401)

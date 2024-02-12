@@ -5,6 +5,7 @@ from  accounts import  views as accountview
 
 
 
+
 urlpatterns = [
     path('',accountview.vendashboard,name='vendor'),
     path('profile/',views.vprofile,name='vprofile'),

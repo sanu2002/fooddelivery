@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+
+
+
+{% block content %}
+
+
+
+
+
+
+<div class="main-section">
+    
+           <div class="page-section">
+               <div class="container"  style="padding-top:70px";>
+                   <div class="row">
+                   
+                       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                           <div class="tabs-holder horizontal">
+                               <ul class="stickynav-tabs nav nav-tabs">
+                                   <li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Menu</a></li>
+                                   
+                               </ul>
+                               <div class="tab-content">
+                                   <div id="home" class="tab-pane in active">
+                                       <div class="menu-itam-holder">
+
+                                                <div id="empty_block" style="font-weight:800;  display:none; margin:20px 60px 60px 220px;padding:40px;font-family: 'Lemon', serif;
+                                                        font-family: 'Rubik Broken Fax', system-ui">
+                                                    <span>There is nothing in the cart</span>
+                                                </div>
+                                
+                                           
+                                           <div id="menu-item-list-6272" class="menu-itam-list">
+                                           
+
+
+                                                {% if cart_item %}
+
+                                                <ul>
+                                                    {% for item in cart_item %}
+
+                                                    <li id="cart_item-{{item.id}}" class="data_get">
+                                                        <div class="image-holder"><img src="{{item.fooditem.image.url}}"></div>
+                                                        <div class="text-holder">
+                                                            <h6>{{item.fooditem}}</h6>
+                                                            <span>{{item.fooditem.description}}</span>
+                                                            <!-- here i will add vendor name and badges for knowing in which restaurant i  -->
+                                                            <!-- ordered the partcukar item   -->
+                                                            <a href="{% url 'vendor_details' item.fooditem.vendor.vendor_slug %}" class="badge badge-warning">{{item.fooditem.vendor}}</a>
+                                                        </div>
+                                                        <div class="price-holder">
+                                                            <span class="price">{{item.fooditem.price}}</span>
+                                                        
+                                                            <!-- Minus icon with inline styles -->
+                                                            <a href="#"  li_id="{{item.id}}" class="cart-decrease-data"  id="{{item.fooditem.id}}" data-url="{% url 'remove_from_cart' item.fooditem.id %}" style="margin-right: 28px; display: inline-block; font-size: 16px; color: #333; cursor: pointer;"><i class="icon-minus text-color"></i></a>
+                                                        
+                                                            <!-- Cart count label with inline styles -->
+                                                            <label   id="qt-{{item.fooditem.id}}" class="cart_count" style="display: inline-block; /* Add any specific styles for the cart_count label here */">0</label>
+                                                        
+                                                            <!-- Plus icon with inline styles -->
+                                                            <a href="#" class="cart-add-data" id="{{item.fooditem.id}}" data-url="{% url 'add_to_cart' item.fooditem.id %}" style="margin-right: 28px; display: inline-block; font-size: 16px; color: #333; cursor: pointer;"><i class="icon-plus4 text-color"></i></a>
+
+                                                            <a href="#" class="delete-item" id="{{item.id}}" data-url="{% url 'delete_cart' item.id %}" style="margin-right: 28px; display: inline-block; font-size: 16px; color: #333; cursor: pointer;"><i class="icon-delete text-color"></i></a>
+                                                        
+                                                            <span id="add-menu-loader-10"></span>
+                                                        </div>
+                                                    </li>
+                                                    
+
+                                                {% endfor %}
+
+                                            
+                                                </ul>
+                                                
+												{% for i in cart_item %}
+
+                                                <span id="qt-{{i.fooditem.id}}" class="item_qt" data_qt="{{i.quantitiy}}" ></span>
+
+
+                                                 {% endfor %}
+
+
+                                                 {% else %}
+                                                 <div style="font-weight:800; margin:20px 60px 60px 220px;padding:40px;font-family: 'Lemon', serif;
+                                                      font-family: 'Rubik Broken Fax', system-ui;">
+                                                     <span>There is nothing in the cart</span>
+                                                 </div>
+                                                 
+
+
+                                                
+
+
+                                                {% endif %}
+                                                
+                                         
+
+                                                
+
+
+                                               
+
+                                   
+                                               
+                                               
+
+                                   
+                                               
+                                           </div>
+                                       </div>
+                                   </div>
+                                   
+                               </div>
+                           </div>
+                       </div>
+                       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                           <div class="tabs-holder horizontal">
+                               <ul class="stickynav-tabs nav nav-tabs">
+                                   <li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Menu</a></li>
+                                   
+                               </ul>
+                               <div class="tab-content" >
+                                   <div id="home" class="tab-pane in active">
+                                       <div class="menu-itam-holder" style="padding-top:23px";">
+                                           
+                                           <div id="menu-item-list-6272" class="menu-itam-list">
+
+                                                <div>
+                                                    <ul style="display:flex; flex-direction:column;">
+                                                        <li style="font-weight: bold;">
+                                                            Subtotal
+                                                            <span id="subtotal" style="padding-left:195px; font-weight: bold;">{{subtotal}}</span>
+                                                        </li>
+                                                       
+                                                        <li style="font-weight: bold;">
+                                                            Tax
+                                                            <span id="tax" style="padding-left:230px; font-weight: bold;">$0</span>
+                                                        </li>
+                                                       
+                                                        <li style="font-weight: bold;">
+                                                            Total
+                                                            <span id="total" style="padding-left:220px; font-weight: bold;">{{grandtotal}}</span>
+                                                        </li>
+                                                       
+                                                        
+                                                    </ul>
+                                                </div>
+                                               
+                                               
+
+                                   
+                                               
+                                           </div>
+                                       </div>
+                                   </div>
+                                   
+                               </div>
+                           </div>
+                       </div>
+
+
+
+
+
+                       
+                   </div>
+               </div>
+           </div>
+       </div>
+
+
+
+
+
+
+{% endblock %}

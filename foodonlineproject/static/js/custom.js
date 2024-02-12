@@ -1,3 +1,4 @@
+
 let autocomplete;
 
 function initAutoComplete() {
@@ -109,14 +110,52 @@ window.onload = initAutoComplete;
 // https://sweetalert2.github.io/#download - I will use this for showing login required
 
 document.addEventListener('DOMContentLoaded', function() {
-    function updateCartCounterAndAlert(response, foodId) {
-        if (response && response.cart_count) {
+    function updateCartCounterAndAlert(response, foodId,li_id) {
+        console.log(response)
+
+        if (response.chckcart==0){
+            document.getElementById("cart_item-"+li_id).remove()
+
+            
+            
+             
+
+        }
+
+
+
+
+       
+
+      
+
+        if (response.cart_count) {
             document.getElementById('cart_counter').innerHTML = response.cart_count['cart_count'];
+            let cart_count=document.getElementById('cart_counter').innerHTML
+
+       
+           
+            if (cart_count==0){
+                     document.getElementById("empty_block").style.display="block";
+                     
+                            
+                    
+                     
+            }
+
+
         }
 
         if (response && response.chckcart) {
+           
             document.querySelector(`#qt-${foodId}`).innerHTML = response.chckcart;
+
+            
+           
+       
         }
+
+
 
         if (response && response.status === 'login_required') {
             swal({
@@ -124,19 +163,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 text:response.message,
                 type: "error",
                 confirmButtonText: "Cool",
+                
              
             });
+
+
+
+
         }
+        
+
+
+
     }
+
+
+    // This is for my cart_deletetion 
+
+
+
+
+
+
+
+
+
+
+
 
     document.querySelectorAll('.cart-decrease-data').forEach(function(element) {
         element.addEventListener('click', function(e) {
             e.preventDefault();
             const foodId = this.getAttribute('id');
             const url = this.getAttribute('data-url');
+            const li_id=this.getAttribute('li_id')
 
             const data = {
-                'id': foodId
+                'id': foodId,
+                'li_id':li_id
+              
             };
 
             fetch(url + '?' + new URLSearchParams(data), {
@@ -144,7 +209,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then((response) => response.json())
                 .then((response) => {
-                    updateCartCounterAndAlert(response, foodId);
+                    updateCartCounterAndAlert(response, foodId,li_id);
+                    document.getElementById('subtotal').innerHTML=response.cart_amount['subtotal']
+                    document.getElementById('total').innerHTML=response.cart_amount['grandtotal']
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -152,14 +219,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     document.querySelectorAll('.cart-add-data').forEach(function(element) {
         element.addEventListener('click', function(e) {
             e.preventDefault();
             const foodId = this.getAttribute('id');
             const url = this.getAttribute('data-url');
+            // const qt=this.getAttribute('data')
 
             const data = {
                 'food': foodId,
+                // 'quantity': qt
             };
 
             fetch(url + '?' + new URLSearchParams(data), {
@@ -167,13 +251,195 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(response => response.json())
                 .then(response => {
+                    console.log(response)
+
                     updateCartCounterAndAlert(response, foodId);
+                    document.getElementById('subtotal').innerHTML=response.cart_amount['subtotal']
+                    document.getElementById('total').innerHTML=response.cart_amount['grandtotal']
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
         });
     });
+
+
+
+
+
+
+function remove_cart(response,id){
+
+
+    if (response.status == 'success') {
+
+        swal({
+            title: "Success!",
+            text: "Your item has been removed from the cart.",
+            icon: "success"
+        });
+
+        document.getElementById('subtotal').innerHTML=response.cart_amount['subtotal']
+            
+        document.getElementById('total').innerHTML=response.cart_amount['grandtotal']
+
+
+        remove_cart_list(0,id,response)
+        iscart_empty()
+        
+      }
+
+
+
+
+
+
+
+    else{
+        swal({
+            title: "error!",
+            text: "There is no item in your acc.",
+            icon: "Error",
+            button: "Continue Shopping"
+
+          })
+
+
+    }
+
+
+
+}
+
+
+
+function remove_cart_list(cart_item_qty,id,response){
+
+    if (cart_item_qty<=0){
+        document.getElementById("cart_item-"+id).remove()
+        document.getElementById("cart_counter").innerHTML=response.cart_counter["cart_count"]
+        
+
+
+
+
+
+             
+             
+           
+               
+
+
+    }
+
+
+      
+
+
+
+    
+}
+
+
+
+
+function iscart_empty(){
+    let cart_count=document.getElementById('cart_counter').innerHTML
+    console.log(cart_count)
+    if (cart_count==0){
+             document.getElementById("empty_block").style.display="block";
+             
+                    
+            
+             
+    }
+
+        
+
+}
+
+
+
+
+
+
+
+
+// here i will add the functionatlity for decrease cart 
+        document.querySelectorAll('.delete-item').forEach(function(element){
+            
+
+            element.addEventListener('click',function(e){
+
+                e.preventDefault()
+
+                const id=this.getAttribute('id')
+                const url=this.getAttribute('data-url')
+
+
+
+
+
+                const data={
+                    'cart_id':id
+                }
+
+
+                fetch(url + '?' + new URLSearchParams(data),{
+                    method:'GET'
+                })
+
+                .then((response)=>response.json())
+                .then((response)=>{  
+
+                   
+                    
+                    remove_cart(response,id)
+                      
+                         
+
+                           
+                       
+                })
+                 
+
+
+
+
+
+
+
+
+
+
+            })
+
+
+
+
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Place the cart item quantity on load
     let item_qt = document.getElementsByClassName('item_qt');
@@ -204,7 +470,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
+
+
+
+
+
+
     
 
+
+
+
+
+
+
+
+// we will check a another condition wen i will reach to the counter itm to 0
+// my cart shoud be deleted
 
 

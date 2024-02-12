@@ -3,7 +3,14 @@ from django.http import JsonResponse
 # Create your views here.
 from django.db.models import Prefetch
 from .models import Cart
-from .context_processor import get_cart_counter
+from .context_processor import get_cart_counter,get_cart_amont
+
+from django.db.models import Q
+
+
+
+
+from django.contrib.auth.decorators import login_required
 
 
 from menuapp.models import *
@@ -68,7 +75,7 @@ def add_to_cart(request, food_id):
                     chckcart = Cart.objects.get(user=request.user, fooditem=fooditem)
                     chckcart.quantitiy += 1
                     chckcart.save()
-                    return JsonResponse({'status': 'increases cart', 'cart_count': get_cart_counter(request), 'chckcart': chckcart.quantitiy}, status=200)
+                    return JsonResponse({'status': 'increases cart', 'cart_count': get_cart_counter(request), 'chckcart': chckcart.quantitiy,'cart_amount':get_cart_amont(request)}, status=200)
 
                 except Cart.DoesNotExist:
                     chckcart = Cart.objects.create(user=request.user, fooditem=fooditem, quantitiy=1)
@@ -95,7 +102,7 @@ def remove_from_cart(request, food_id):
                         chckcart.delete()
                         chckcart.quantitiy = 0
                         
-                    return JsonResponse({'status': 'decreases cart', 'cart_count': get_cart_counter(request), 'chckcart': chckcart.quantitiy}, status=200)
+                    return JsonResponse({'status': 'decreases cart', 'cart_count': get_cart_counter(request), 'chckcart': chckcart.quantitiy,'cart_amount':get_cart_amont(request)}, status=200)
 
                 except Cart.DoesNotExist:
                     return JsonResponse({'status': 'failed', 'message': 'you dont have item in this cart'}, status=400)
@@ -107,3 +114,89 @@ def remove_from_cart(request, food_id):
 
     else:
         return JsonResponse({'status': 'login_required', 'message': 'you need to login first'}, status=401)
+    
+    
+    
+    
+@login_required(login_url='login', redirect_field_name='login')
+
+def cart(request):    
+    
+    
+    if request.user.is_authenticated:
+        cart_item=Cart.objects.filter(user=request.user).order_by('created_at')
+        # Nothing but the it of the 2 fooditem 
+        
+    else:
+        cart_item=None
+    
+    context={
+        'cart_item':cart_item,
+    }
+    print(context)
+    
+    return render(request,'market/cart.html',context)
+
+
+def delete_cart(request,cart_id):
+    
+    if request.user.is_authenticated:
+        try:
+            cart_item=Cart.objects.filter(user=request.user,id=cart_id) 
+            print(cart_item)
+         
+
+            try:
+                if cart_item:
+                    cart_item.delete()
+                    return JsonResponse({'status':'success','message':'delete successfully','cart_counter':get_cart_counter(request),'cart_amount':get_cart_amont(request)})
+                else:
+                    return JsonResponse({'status':'error','message':'you cant delete'})  
+                
+            except:
+                return JsonResponse({'status':'success','message':'cart item doesnot exit'})
+
+                
+                
+            return JsonResponse({'status':'success','message':'cart item fetch successfully'})
+
+        except:
+            return JsonResponse({'status':'error','message':'cart_item error'})
+    
+    
+    
+    else:
+        return JsonResponse({'status': 'login_required', 'message': 'you need to login first'}, status=401)
+    
+    
+    
+    
+    
+def search(request):
+    add=request.GET.get('address')
+    lat=request.GET.get('lat')
+    lan=request.GET.get('lan')
+    radius=request.GET.get('radius')
+    keyword=request.GET.get('keyword')
+    
+    
+    
+    # This functionality is good but it is not a smart way to handle the search functinality 
+    # so we need to make the search function available for foodname
+    
+    
+    
+    fetch_vendor_by_fooditem=Fooditem.objects.filter(foodtitle__icontains=keyword,is_avalable=True).values_list('vendor')
+    print(fetch_vendor_by_fooditem)
+    
+    vendor=Vendor.objects.filter(Q(id__in=fetch_vendor_by_fooditem) | Q(vendor_name__icontains=keyword,is_approved=True,user__is_active=True))
+    vendor_count=vendor.count()
+    context={
+        'vendor':vendor,
+        'vendor_count':vendor_count
+        
+        
+    }
+       
+   
+    return render(request,'market/listing.html',context)

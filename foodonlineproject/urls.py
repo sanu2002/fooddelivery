@@ -21,13 +21,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
+from marketplace import views as Maeketviews
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index,name='home'),
     path('accounts/',include('accounts.urls')),
     path('vendor/',include('vendor.urls')),
     path('menuapp/',include('menuapp.urls')),
-    path('marketplace',include('marketplace.urls')),
+    path('marketplace/',include('marketplace.urls')),
+    
+    path('cart/',Maeketviews.cart,name='cart'),
+    path('search/',Maeketviews.search,name='search')
     # path("__debug__/", include("debug_toolbar.urls")),
     # path('geoocode/',views.geoocode)
    

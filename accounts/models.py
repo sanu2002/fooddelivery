@@ -4,6 +4,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
+from django.db.models import Q
+
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, first_name, last_name, password=None):
         if not email:
@@ -86,6 +89,11 @@ class Userprofile(models.Model):
     latitude=models.CharField(max_length=20,null=True,blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True)
+    
+    
+    
+    # def get_queryset(self):
+    #     return Userprofile.objects.filter(Q(longtitude__icontains=85.0) | Q(latitude__icontains=20.0))
     
     def __str__(self):
         return self.user.email

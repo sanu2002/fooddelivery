@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+
+{% block content %}  
+
+
+
+
+
+
+
+
+
+<div class="main-section">
+    <div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 10px;margin-bottom: 0px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <aside class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                            
+                        </aside>
+                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                            <div class="listing-sorting-holder">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h4>{{vendor_count}}-Restaurant found</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="listing simple">
+
+
+                                <ul>
+                                    {% for i in vendor %}
+
+                                    <li>
+                                        <div class="img-holder">
+                                            <figure>
+                                                <!-- you can give the additional condtiion if the profile will exits then show the picture else dafault picture  -->
+                                                {% if i.user_profile.profile_pictutre %}
+                                                        <a href="#"><img src="{{i.user_profile.profile_pictutre.url}}" class="img-list wp-post-image" alt=""></a>
+                                                {% else %}
+                                                  <a href="#"><img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Fvector-art%2F20168700-faceless-male-silhouette-vector-empty-state-avatar-icon-businessman-editable-404-not-found-persona-for-ux-ui-design-cartoon-profile-picture-with-red-dot-colorful-website-mobile-error-user-badge&psig=AOvVaw2xJwO-MN_kP0DWmH9d0SAk&ust=1703680227976000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCND1xMmNrYMDFQAAAAAdAAAAABAD" class="img-list wp-post-image" alt=""></a>
+
+
+                                                {% endif %}
+                                            </figure>
+                                            <span class="restaurant-status close"><em class="bookmarkRibbon"></em>Close</span>
+                                        </div>
+                                        <div class="text-holder">
+                                            <div class="list-rating">
+                                                <div class="rating-star">
+                                                    <span class="rating-box" style="width: 100%;"></span>
+                                                </div>
+                                                <span class="reviews"></span>
+                                        </div>
+                                        <div class="post-title">
+                                                <h5>
+                                                    <a href="{% url 'vendor_details' i.vendor_slug %}">{{i.vendor_name}}</a>
+                                                    <span class="sponsored text-color">Sponsored</span>
+                                                </h5>
+                                        </div>
+                                            <span class="post-categories"><span>{{i.user_profile.addressline_1}}
+                                                </span> 
+                                                </span>
+
+                                                
+                                        </div>
+                                        <div class="list-option">
+
+                                            <a href="{% url 'vendor_details' i.vendor_slug %}" class="viewmenu-btn text-color">View Menu</a>
+                                        </div>
+                                    </li>
+                                    
+
+
+                                    
+                                        
+                                    </li>
+                                {% endfor %}
+
+                                </ul>
+
+
+
+                                            
+
+
+
+                            </div>
+                            
+                        </div>
+                        <div class="section-sidebar col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div class="message-box" style="background-color: #fa9918;">
+                                <strong>I'm not Listed!</strong><span>is your restaurant or
+                                    business not
+                                    listed on over site</span>
+                                <a href="{% url 'registerVendor' %}" class="request-btn">Add Your business!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+
+
+<!-- {{search_result}} -->
+
+
+
+<!-- <h1>Restaurant not found</h1> -->
+{% endblock content %}

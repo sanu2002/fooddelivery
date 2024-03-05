@@ -1,4 +1,3 @@
-
 let autocomplete;
 
 function initAutoComplete() {
@@ -11,11 +10,23 @@ function initAutoComplete() {
     autocomplete.addListener('place_changed', onPlaceChanged);
 }
 
+
+
 function onPlaceChanged() {
     const place = autocomplete.getPlace();
 
     if (place.geometry) {
-        // Print the address_components directly
+
+        //Print the address_components directly;
+        //const addressComponents = '<div>';
+        //const addressComponents;
+        
+
+
+
+
+
+
 
         let geocoder = new google.maps.Geocoder();
         geocoder.geocode({ 'address': place.formatted_address }, function (results, status) {
@@ -69,6 +80,7 @@ function onPlaceChanged() {
 
 // Initialize the autocomplete when the Google Maps API is loaded
 window.onload = initAutoComplete;
+
 
 
 // $(document).ready(function(e){
@@ -158,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         if (response && response.status === 'login_required') {
-            swal({
+             swal({
                 title: "Oops!",
                 text:response.message,
                 type: "error",
@@ -431,7 +443,126 @@ function iscart_empty(){
 
 
 
+// here i will add the functionality of  openinfg and closing hours 
+document.querySelectorAll('.add_hour').forEach(function(element) {
+    element.addEventListener('click', function(e) {
+        e.preventDefault();
 
+        let day = document.getElementById('id_day').value;
+        let from_hour = document.getElementById('id_from_hour').value;
+        let to_hour = document.getElementById('id_to_hour').value;
+        let is_closed = document.getElementById('id_is_closed').checked;
+        let csrf = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        let url = document.getElementById('add_hour_url').value;
+    
+        
+        if(is_closed){
+            is_closed='True';
+            condition="day !=''";
+        } else {
+            is_closed='False';
+            condition="day !='' && from_hour !='' && to_hour !=''";
+        }
+
+        let data={
+            'day': day,
+            'from_hour': from_hour,
+            'to_hour': to_hour,
+            'is_closed': is_closed,
+            'csrf': csrf
+        }
+
+
+        if (eval(condition)){
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrf
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                //   console.log(data)
+                
+                  if(data.status=="success"){
+                      console.log(data)
+                       if(data.is_closed){
+                        //    console.log('i am got executyed')
+                    
+                           var html = "<tr><td><b>" + data.day + "</b></td><td><b>Closed</b></td><td><a href=''>Remove</a></td></tr>";
+                           document.getElementById("opening_hours").insertAdjacentHTML('beforeend', html);
+                              
+                           
+                       }
+                       else{
+                        var html = "<tr><td><b>" + data.day + "</b></td><td><b>" + data.from_hour + " - " + data.to_hour + "</b></td><td><a href=''>Remove</a></td></tr>";
+                        document.getElementById("opening_hours").insertAdjacentHTML('beforeend', html);
+                       
+                       
+
+
+                       }
+                        
+
+
+                       
+                  }
+                  else{
+                     
+                        swal({
+                            title: "Oops!",
+                            text:'The day is already exit',
+                            type: "error",
+                            confirmButtonText: "Cool",
+                            
+                        })
+                  }
+              
+
+                
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+});
+document.querySelectorAll('.remove-hour').forEach(function(element) {
+    element.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // Extract the PK from the URL more reliably
+        const urlParts = this.getAttribute('href').split('/');
+        const pk = urlParts[urlParts.length - 2];  // Access the second-to-last part of the URL
+
+        // Remove the <tr> element associated with the clicked link
+        const trId = 'tableid-' + pk;
+        const trElement = document.getElementById(trId);
+        let csrf = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+        if (trElement) {
+            // Make AJAX request to delete data on the backend
+
+            fetch(`/vendor/openinghour_delete/${pk}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrf
+                },
+            })
+            .then(response => {
+                 return response
+               
+            })
+            .then(data => {
+                const trElement = document.getElementById(trId).remove();
+
+                      
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+});
 
 
 

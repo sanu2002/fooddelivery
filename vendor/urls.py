@@ -16,7 +16,10 @@ urlpatterns = [
     path('delete/<int:pk>/', views.cat_delete, name='delete'),
     path('food_delete/<int:id>/', views.food_delete, name='food_delete'),
     path('add_food',views.add_food,name='add_food'),
-    path('food_update/<int:pk>/',views.food_update,name='food_update')
+    path('food_update/<int:pk>/',views.food_update,name='food_update'),
+    path('opening_hour/',views.opening_hour,name='opening_hour'),
+    path('opening_hour/add',views.add_opening_hour,name='add_opening_hour'),
+    path('openinghour_delete/<int:pk>/',views.openinghour_delete,name='openinghour_delete'),
     
 
     # path('vendor_update/',views.vendor_update,name='vendor_update'),

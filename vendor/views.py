@@ -10,7 +10,11 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 from .utils import *
 
+from accounts.context_processor import  get_vendor
+
 from menuapp.models import Fooditem
+
+from .forms import Openinghourform
 
 
 import json
@@ -256,3 +260,112 @@ def food_update(request, pk):
 
 
 
+
+
+
+
+def opening_hour(request):
+    v_id=get_vendor(request)
+    # print(v_id)
+    hours=Openinghour.objects.filter(vendor=v_id['vendor'])
+    # if v_id:
+    #       hours=Openinghour.objects.filter(vendor=v_id)
+    # else:
+    #     hours=None
+    # # print(dir(request.user))
+
+    
+    # print(vendor)
+    # print(opening_hours)
+    # print(opening_hour)
+    
+    
+    hour_form=Openinghourform()
+    
+
+    context={
+          'form':hour_form,
+          'opening_hours':hours
+          
+    }
+    
+    
+    return render(request,'vendor/openinghour.html',context)
+
+
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+def add_opening_hour(request):
+    try:
+        if request.user.is_authenticated:
+            if request.method == 'POST':
+                data=json.loads(request.body)
+                # print(data,'here is yoou request data ---------------')
+                day=data['day']
+                from_hour=data['from_hour']
+                to_hour=data['to_hour']
+                is_closed_str =data['is_closed']
+                is_closed = is_closed_str.lower() == 'true' if is_closed_str.lower() in ['true', 'false'] else False
+
+                print(day,from_hour,is_closed,to_hour)
+         
+   
+                try:
+                    v_id=get_vendor(request)    # print(v_id) 
+                    
+                    hour=Openinghour.objects.create(vendor=v_id['vendor'],day=day,from_hour=from_hour,to_hour=to_hour,is_closed=is_closed)
+                    if hour:
+                        hour_obj=Openinghour.objects.get(id=hour.id)
+                        if(hour_obj.is_closed):
+                            return JsonResponse({'status':'success','day':hour_obj.get_day_display(),'is_closed':is_closed})
+
+                        else:
+                            return JsonResponse({'status':'success','day':hour_obj.get_day_display(),'from_hour':from_hour,'to_hour':to_hour,'is_closed':is_closed})
+
+                    else:
+                        return JsonResponse({'status':'there is some error in hour'})
+                    
+                    
+                    
+                    
+                         
+
+                        
+                    
+                    
+                   
+                   
+                    
+                    
+                except:
+                    return JsonResponse({'error':'error'})
+
+                
+                
+
+
+                
+            else:
+                return JsonResponse({'error': 'Invalid method'})
+        else:
+            return HttpResponse('Bad request')
+    except Exception as e:
+        logger.exception("Error in add_opening_hour view")
+        return JsonResponse({'error': 'Internal Server Error'}, status=500)
+
+
+
+def openinghour_delete(request, pk):
+    try:
+        hour_data = Openinghour.objects.filter(id=pk)
+        print(pk)
+        print(hour_data)
+        hour_data.delete()
+        return JsonResponse({'success': 'deleted successfully'})
+    except Openinghour.DoesNotExist:
+        return JsonResponse({'error': 'Openinghour not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

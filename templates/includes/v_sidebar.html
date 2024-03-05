@@ -10,6 +10,9 @@
 										<li class="{% if 'menu_builder' in request.path %}active{% endif %}">
 											<a href="{% url 'menu_builder' %}"><i class="icon-building"></i>Menu-Builder</a>
 										</li>
+										<li class="{% if 'opening_hour' in request.path %}active{% endif %}">
+											<a href="{% url 'opening_hour' %}"><i class="icon-building"></i>Opening-Hour</a>
+										</li>
 <!--										in my restaurant tab i will take care about that crud functionalities-->
 										<li><a href="restaurant-orders.html"><i class="icon-add_shopping_cart"></i>Orders</a></li>
 										<li><a href="restaurant-earnings.html"><i class="icon-money"></i>Earnings</a></li>

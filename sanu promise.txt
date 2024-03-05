@@ -1,0 +1,63 @@
+console.log(data);
+
+
+                if(data.status=='success'){
+
+                    if (data.is_closed == 'Closed') {
+                        var html = "<tr><td><b>" + data.day + "</b></td><td><b>Closed</b></td><td><a href=''>Remove</a></td></tr>";
+                        document.getElementById("opening_hours").insertAdjacentHTML('beforeend', html);
+                    } else {
+                        var html = "<tr><td><b>" + data.day + "</b></td><td><b>" + data.from_hour + " - " + data.to_hour + "</b></td><td><a href=''>Remove</a></td></tr>";
+                        document.getElementById("opening_hours").insertAdjacentHTML('beforeend', html);
+                    }
+
+                    // data.clear()
+
+
+
+                }
+
+                else{
+
+                    swal({
+                        title: data.response.message,
+                        text: "Field alraedy exit",
+                        icon: "Error",
+                        button: "Continue Shopping"
+            
+                      })
+            
+
+                }
+
+
+
+
+
+                // Handle response data here
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+            
+
+
+
+
+
+
+
+
+
+
+        }
+
+        else{
+            swal({
+                title: "error!",
+                text: "Plese fill all the details",
+                icon: "x",
+                button: "Error"
+    
+              })
+        }

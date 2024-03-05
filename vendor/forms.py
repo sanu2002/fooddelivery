@@ -3,6 +3,10 @@ from django import forms
 from accounts.custom_validation import  valid_file
 from menuapp.models import *
 
+from accounts.context_processor import get_vendor
+
+from .models import Openinghour
+
 from.models import Vendor
 class Vendorform(forms.ModelForm):
     vendor_license=forms.FileField(widget=forms.FileInput(attrs={'class':'btn btn-info'}),validators=[valid_file])
@@ -56,8 +60,12 @@ class Food_form(forms.ModelForm):
 # and save it(for vendor we no need to care about  but for making 
 # food we need to create the object)
        
-       
-
-
-        
+class Openinghourform(forms.ModelForm):
+      class Meta:
+            model=Openinghour
+            fields=['day','from_hour','to_hour','is_closed']
+            
+            
+            
+     
         

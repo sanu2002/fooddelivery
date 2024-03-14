@@ -3,12 +3,20 @@ import json
 from foodonlineproject import settings
 from django.shortcuts import render, redirect
 
+from accounts.context_processor import get_vendor
+
 from accounts.models import Userprofile
+from vendor.models import Vendor
 
 from django.shortcuts import render
 
 def index(request):
-    return render(request,'home.html')
+    # vendor=get_vendor(request)This is not applicable why just because i need all the restaurant details 
+    vendor=Vendor.objects.all()
+    context={
+        'vendors':vendor
+    }
+    return render(request,'home.html',context)
 
 
 # def geocode1(request):

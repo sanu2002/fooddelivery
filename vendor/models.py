@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import time 
+from datetime import time ,datetime,date
 
 # Create your models here.
 from accounts.models import Custom_User,Userprofile
@@ -14,6 +14,23 @@ class Vendor(models.Model):
     is_approved=models.BooleanField(default=False)
     created_at=models.DateTimeField(auto_now_add=True)
     modified_at=models.DateTimeField(auto_now=True)
+    
+    def is_open(self):
+            today=date.today().isoweekday()
+            current_openignday=Openinghour.objects.filter(vendor=self,day=today)
+            current_time=datetime.now()
+            time_now=current_time.strftime("%H:%M:%S")
+            is_open=None
+            for i in current_openignday:
+                start_time=str(datetime.strptime(i.from_hour, '%I:%M:%p').time())
+                end_time=str(datetime.strptime(i.to_hour, '%I:%M:%p').time())
+                if time_now > start_time and time_now<end_time:
+                    is_open=True
+                    break
+                else:
+                    is_open=False
+            return is_open
+            
     
     
     def __str__(self) -> str:
@@ -66,14 +83,16 @@ class Openinghour(models.Model):
     is_closed = models.BooleanField(default=False)
     
 
+    
+
     def __str__(self):
         return self.get_day_display()
     
     
     
     class Meta:
-        ordering = ('day', 'from_hour')
-        unique_together = ('day', 'from_hour', 'to_hour')
+        ordering = ('day', '-from_hour')
+        unique_together = ('vendor','day', 'from_hour', 'to_hour')
 
         # this is check the uniqueness of multiple fields 
         

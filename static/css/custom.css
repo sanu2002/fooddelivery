@@ -33,3 +33,7 @@
  
     /* Add more styles as needed */
 }
+
+.delivery-dropdown{
+    display: none!important;
+}

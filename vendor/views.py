@@ -361,11 +361,13 @@ def add_opening_hour(request):
 def openinghour_delete(request, pk):
     try:
         hour_data = Openinghour.objects.filter(id=pk)
-        print(pk)
-        print(hour_data)
+        # print(pk)
+        # print(hour_data)
         hour_data.delete()
         return JsonResponse({'success': 'deleted successfully'})
     except Openinghour.DoesNotExist:
         return JsonResponse({'error': 'Openinghour not found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+

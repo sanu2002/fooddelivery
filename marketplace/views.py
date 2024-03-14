@@ -6,7 +6,7 @@ from .models import Cart
 from .context_processor import get_cart_counter,get_cart_amont
 
 from django.db.models import Q
-
+from datetime import date,datetime
 
 
 
@@ -41,6 +41,18 @@ def vendor_details(request,vendor_slug):
     vendor=get_object_or_404(Vendor,vendor_slug=vendor_slug)
 
     
+    opening_hour=Openinghour.objects.filter(vendor=vendor).order_by('day','-from_hour')
+    # print(opening_hour)
+    # for i in opening_hour:
+    #     print(i.from_hour,i.to_hour)
+    today=date.today().isoweekday()
+    current_openignday=Openinghour.objects.filter(vendor=vendor,day=today)
+    
+
+
+    
+
+    
     category=Category.objects.filter(vendor=vendor).prefetch_related(
         Prefetch(
             'fooditem',
@@ -59,6 +71,8 @@ def vendor_details(request,vendor_slug):
         'vendor':vendor,
         'category':category,
         'cart_item':cart_item,
+        'opening_hour':opening_hour,
+        'current_openignday':current_openignday
     }
     
     

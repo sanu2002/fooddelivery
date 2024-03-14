@@ -180,9 +180,10 @@ def registerVendor(request):
                 user.save()
                 
                 vendor=v_form.save(commit=False)
+                print(vendor,'here is the vendor data wen vendor got created')
                 vendor.user=user 
                 vendor_name=v_form.cleaned_data['vendor_name']
-                vendor.vendor_slug = slugify(vendor_name) + '-' + str(vendor.id)
+                vendor.vendor_slug = slugify(vendor_name) + '-' + str(user.id)
                 user_profile=Userprofile.objects.get(user=user)
                 vendor.user_profile=user_profile
                 print('i am here')

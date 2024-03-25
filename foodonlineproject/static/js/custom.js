@@ -123,7 +123,7 @@ window.onload = initAutoComplete;
 
 document.addEventListener('DOMContentLoaded', function() {
     function updateCartCounterAndAlert(response, foodId,li_id) {
-        console.log(response)
+        
 
         if (response.chckcart==0){
             document.getElementById("cart_item-"+li_id).remove()
@@ -131,6 +131,42 @@ document.addEventListener('DOMContentLoaded', function() {
             
             
              
+
+        }
+
+        if (response.cart_amount){
+             for (key in response.cart_amount.tax_dict){
+                    for (key2 in response.cart_amount.tax_dict[key]){
+                        let taxElement = document.getElementById('tax-' + key).querySelector('span');
+                        if (taxElement) {
+                            taxElement.textContent = response.cart_amount.tax_dict[key][key2];
+                        }
+                        
+                    }
+             }
+
+              
+
+
+
+
+            // let cgst=response.cart_amount.tax_dict
+            
+            // document.getElementById('data').innerHTML=cgst.CGST['9.00']
+            // document.getElementById('data').innerHTML=cgst.SGST['3.00']
+
+
+            // for (key in response.cart_amount.tax_dict){
+            //         for (key2 in  response.cart_amount.tax_dict[key]){
+            //             document.getElementById('data-'+key).innerHTML=response.cart_amount.tax_dict[key][key2]
+
+                        //    i willl start from here 
+            //         }
+            // }
+
+            
+            
+            // document.getElementById('data').innerHTML=response.cart_amount.tax_dict['SGST']
 
         }
 
@@ -221,9 +257,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then((response) => response.json())
                 .then((response) => {
+                   
+
                     updateCartCounterAndAlert(response, foodId,li_id);
+
+                   
                     document.getElementById('subtotal').innerHTML=response.cart_amount['subtotal']
                     document.getElementById('total').innerHTML=response.cart_amount['grandtotal']
+                    // document.getElementById('data').innerHTML=cgst.CGST['9.00']
+                    // document.getElementById('data').innerHTML=cgst.SGST['3.00']
+
+
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -266,6 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log(response)
 
                     updateCartCounterAndAlert(response, foodId);
+        
                     document.getElementById('subtotal').innerHTML=response.cart_amount['subtotal']
                     document.getElementById('total').innerHTML=response.cart_amount['grandtotal']
                 })
@@ -407,6 +453,7 @@ function iscart_empty(){
                    
                     
                     remove_cart(response,id)
+                    
                       
                          
 

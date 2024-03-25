@@ -129,19 +129,28 @@
 
                                                 <div>
                                                     <ul style="display:flex; flex-direction:column;">
-                                                        <li style="font-weight: bold;">
-                                                            Subtotal
-                                                            <span id="subtotal" style="padding-left:195px; font-weight: bold;">{{subtotal}}</span>
+                                                        <li style="font-weight: bold; flex-direction:column">
+                                                            
+                                                            <span id="tax"  font-weight: bold;">Sub-Total</span>
+                                                            
+                                                            <span id="subtotal" style="float: right; font-weight: bold;">{{subtotal}}</span>
                                                         </li>
+                                                         {% for key,value  in tax_dict.items %}
+                                                            {% for i,j in value.items %}
+                                                            <li id="tax-{{key}}" style="font-weight: bold; flex-direction:column">
+                                                                {{key}}<small>({{i}}%)</small>
+                                                                <span id="tax" style="float: right;"  font-weight: bold;">{{j}}</span>
+
+                                                            </li>
+                                                            {% endfor %}
+
+                                                        {% endfor %}
                                                        
-                                                        <li style="font-weight: bold;">
-                                                            Tax
-                                                            <span id="tax" style="padding-left:230px; font-weight: bold;">$0</span>
-                                                        </li>
-                                                       
-                                                        <li style="font-weight: bold;">
-                                                            Total
-                                                            <span id="total" style="padding-left:220px; font-weight: bold;">{{grandtotal}}</span>
+                                                        <li style="font-weight: bold; flex-direction:column">
+                                                            
+                                                            <span id="tax"  font-weight: bold;">Total</span>
+                                                            
+                                                            <span id="total" style="float: right; font-weight: bold;">{{grandtotal}}</span>
                                                         </li>
                                                        
                                                         

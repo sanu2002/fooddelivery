@@ -31,6 +31,7 @@ urlpatterns = [
     path('vendor/',include('vendor.urls')),
     path('menuapp/',include('menuapp.urls')),
     path('marketplace/',include('marketplace.urls')),
+    path('customer/',include('customer.urls')),
     
     path('cart/',Maeketviews.cart,name='cart'),
     path('search/',Maeketviews.search,name='search')

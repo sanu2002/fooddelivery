@@ -25,3 +25,22 @@ from foodonlineproject import settings
     
 def get_google_api(request):
   return {'Googleapi':settings.GOOGLE_API_KEYS}
+
+
+
+
+from accounts.models import Userprofile
+
+
+
+def get_profile(request):
+  try:
+   user_profile=Userprofile.objects.get(user=request.user)
+   print(user_profile,'here is your user_profile from context processsor')
+  
+  except:
+       user_profile=None 
+  
+  return dict(user_profile=user_profile)
+   
+  

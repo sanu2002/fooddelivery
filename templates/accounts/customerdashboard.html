@@ -1,12 +1,15 @@
 {% extends "base.html" %} 
 
 
+{% load static %}
+
 
 {% block content %}
 
 
 <div class="main-section">
-			<div class="page-section restaurant-detail-image-section" style=" background: url('https://images.pexels.com/photos/4028788/pexels-photo-4028788.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat scroll 0 0 / cover;">
+	<div class="page-section restaurant-detail-image-section" style=" background: url({% if user_profile.cover_photo %}{{user_profile.cover_photo.url}} {% else %}{% static 'images/default-cover.PNG'%}{% endif %}) no-repeat scroll 0 0 / cover;">
+
 				<!-- Container Start -->
 				<div class="container">
 					<!-- Row Start -->
@@ -17,15 +20,15 @@
 								<div class="company-info">
 									<div class="img-holder">
 										<figure>
-											<img src="" alt="">
+											<img src="{{user_profile.profile_pictutre.url}}" alt="">
 										</figure>
 									</div>
 
 									<div class="text-holder">
-										<span class="restaurant-title">Sanujit</span>
+										<span class="restaurant-title">{{user_profile.user.username}}</span>
 										<div class="text">
 											<i class="icon-location"></i>
-											<p>Mark ricardo road, lane 27, Austin, Texas, USA.</p>
+											<p>{{user_profile.addressline_1}}</p>
 										</div>
 									</div>
 								</div>

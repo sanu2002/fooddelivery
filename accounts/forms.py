@@ -62,3 +62,8 @@ class Userprofile_form(forms.ModelForm):
             
     #     return user
    
+class Userinfoform(forms.ModelForm):
+    class Meta:
+        model=Custom_User
+        fields=['first_name', 'last_name', 'phone_number']
+    

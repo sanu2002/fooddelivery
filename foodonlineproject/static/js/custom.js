@@ -427,9 +427,9 @@ function iscart_empty(){
         document.querySelectorAll('.delete-item').forEach(function(element){
             
 
-            element.addEventListener('click',function(e){
+                element.addEventListener('click',function(e){
 
-                e.preventDefault()
+                e.preventDefault()``
 
                 const id=this.getAttribute('id')
                 const url=this.getAttribute('data-url')
